@@ -9,7 +9,7 @@ import unicodedata
 class atlantic(CrawlSpider):
     name = "atlantic"
     allowed_domains = ["theatlantic.com"]
-    start_urls = ["http://www.theatlantic.com/","http://www.theatlantic.com/politics/","http://www.theatlantic.com/business/","http://www.theatlantic.com/technology/","http://www.theatlantic.com/entertainment/","http://www.theatlantic.com/health/","http://www.theatlantic.com/education/","http://www.theatlantic.com/sexes/","http://www.theatlantic.com/national/","http://www.theatlantic.com/international/"]
+    start_urls = ["https://www.theatlantic.com/","https://www.theatlantic.com/politics/","https://www.theatlantic.com/business/","https://www.theatlantic.com/technology/","https://www.theatlantic.com/entertainment/","https://www.theatlantic.com/health/","https://www.theatlantic.com/education/","https://www.theatlantic.com/sexes/","https://www.theatlantic.com/national/","https://www.theatlantic.com/international/"]
 
     rules = (
         Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="homepage-btf"]/div/ul/li/article/a', '//*[@id="carousel"]/nav/a', '//*[@id="homepage-btf"]/ul/li/article/a', '//*[@id="container"]/div/div/div/ul/li/h3', '//*[@id="container"]/div/div/div/div/h3/a', '//*[@id="container"]/div/div/ul/li/div/h3/a']),callback='parse_item', follow=True),
