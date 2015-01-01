@@ -5,8 +5,6 @@
 
 #!/usr/bin/python
 import psycopg2
-import sys
-import pprint
 #import os
 
 from scrapy.exceptions import DropItem
@@ -33,7 +31,6 @@ class CrawlersPipeline(object):
 	def process_item(self, item, spider):
 		# conn = psycopg2.connect("postgres://dildnnrtxzwbhd:0_PSHQh5konS1dKcY8CIyCplBK@ec2-54-235-80-55.compute-1.amazonaws.com:5432/d6h2dosmoqipg1")
 		# cursor = conn.cursor()
-		print("hereeeee111111 \n\n\n\n")
 
 		self.cursor.execute("SELECT COUNT(*) FROM articles WHERE title = %s AND author = %s AND publication = %s", 
 			(item['title'], item['author'], item['publication'],))
@@ -42,7 +39,6 @@ class CrawlersPipeline(object):
 		if count > 0:
 			raise DropItem("Dropping article, already in database")
 		else:
-			print("hereeeee \n\n\n\n")
 			#note, dateadded will default to current date, datewritten need to be configured with item['date']
 			SQL = "INSERT INTO articles (title, link, author, body, publication, politcalscore, posnegscore) VALUES (%s, %s, %s, %s, %s, %s, %s)" 
 			data = (item['title'], item['link'], item['author'], item['body'], 
