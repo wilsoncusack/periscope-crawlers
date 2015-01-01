@@ -16,7 +16,7 @@ ITEM_PIPELINES = {
 }
 
 RETRY_ENABLED = False
-COOKIES_ENABLED = False
+COOKIES_ENABLED = True
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'
