@@ -43,7 +43,7 @@ class CrawlersPipeline(object):
 			SQL = "INSERT INTO articles (title, link, author, body, publication, politcalscore, posnegscore) VALUES (%s, %s, %s, %s, %s, %s, %s)" 
 			data = (item['title'], item['link'], item['author'], item['body'], 
 				item['publication'], item['politicalScore'], item['posNegScore'],)
-			self.cursor.execute(SQL, data)
+			# self.cursor.execute(SQL, data)
 	    	return item
 
 	# called when the spider is closed
