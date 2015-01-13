@@ -44,7 +44,7 @@ class atlantic(CrawlSpider):
             item['title'] = unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
             item['link'] = unicodedata.normalize('NFKD', link[0].extract()).encode('ascii', 'ignore')
             item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
-            item['publication'] = 'Atlantic'
+            item['publication'] = 'The Atlantic'
             item['politicalScore'] = 0
             item['posNegScore'] = 0
             # need date
