@@ -26,7 +26,7 @@ class nyt(CrawlSpider):
             author = sel.xpath('//*[@id="story-header"]/div/div/p/span/a/span/text()')
             #content = sel.xpath('//*[@id="story"]/p[1]/text()') #List
             content = sel.xpath('//*[@class="story-body-text story-content"]/text()')
-            link = sel.xpath('/html/head/link[2]/@href')
+            link = sel.xpath('/html/head/link[5]/@href')
 
 
             item = newsItem()
