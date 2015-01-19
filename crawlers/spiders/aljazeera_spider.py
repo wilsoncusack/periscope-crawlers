@@ -19,25 +19,25 @@ class Aljazeera(CrawlSpider):
         try:
             sel = Selector(response)
             #print response
-            title = sel.xpath('//*[@id="sectionWrap"]/section/article/div[1]/h1/text()')
+            title = sel.xpath('/html/body/div[2]/div[2]/div/div[2]/div[1]/div[1]/div[1]/div/div[3]/div/h1/text()')
             #print '           '
             #print unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
             #print '           '
             #try:
-            author = sel.xpath('//*[@id="storybyline"]/div/div/div/div/a/div/div/text()')
+            author = sel.xpath('/html/body/div[2]/div[2]/div/div[2]/div[1]/div[1]/div[1]/div/div[4]/div/div[2]/span/a/text()')
             #    item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
             #except:
             #    item['author'] = ''
                 
             #content = sel.xpath('//*[@id="story"]/p[1]/text()') #List
-            content = sel.xpath('//*[@id="storytext"]/p/text()')
+            content = sel.xpath('/html/body/div[2]/div[2]/div/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/p/text()')
             link = sel.xpath('/html/head/link[1]/@href')
 
 
             item = newsItem()
 
             try:
-                date = sel.xpath('//*[@id="story-meta"]/div[1]/time/span[1]/text()')
+                date = sel.xpath('/html/body/div[2]/div[2]/div/div[2]/div[1]/div[1]/div[1]/div/div[4]/div/div[1]/span[1]/text()')
                 item['date'] = unicodedata.normalize('NFKD', date[0].extract()).encode('ascii', 'ignore')
             except:
                 item['date'] = -1
