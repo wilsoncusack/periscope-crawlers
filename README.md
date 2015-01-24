@@ -1,6 +1,10 @@
 periscope-crawlers
 ==================
 
+Install [Psycopg](http://initd.org/psycopg/docs/install.html)
+we used [ports](https://www.macports.org/install.php), when you install, it will be here 
+`/opt/local/bin/port`
+
 Web Crawlers for Periscope
 
 # todo
