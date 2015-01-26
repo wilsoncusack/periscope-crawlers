@@ -12,7 +12,7 @@ class GuardianOpinion(CrawlSpider):
     start_urls = ["http://www.theguardian.com/us/commentisfree"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="opinion"]/div/div[3]/div/ul/li/ul/li/div/div/a', '//*[@id="talking-points"]/div/div[3]/div/ul/li[1]/div/div/a', '//*[@id="talking-points"]/div/div[3]/div/ul/li[2]/ul/li/div/div/a', '//*[@id="in-case-you-missed"]/div/div[3]/div/ul/li/div/div/a']),callback='parse_item', follow=True),
+        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="opinion"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="talking-points"]/div/div/div/ul/li/div/div/a', '//*[@id="talking-points"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="in-case-you-missed"]/div/div/div/ul/li/div/div/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):

@@ -12,7 +12,7 @@ class NewRepublic(CrawlSpider):
     start_urls = ["http://www.newrepublic.com/", "http://www.newrepublic.com/tags/politics", "http://www.newrepublic.com/tags/culture", "http://www.newrepublic.com/latest"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="homepage"]/div[2]/div[3]/div/div/div/div/h3/a', '//*[@id="homepage"]/div[2]/div[1]/div[3]/div/div/h3/a', '//*[@id="homepage"]/div[2]/div[1]/div[2]/div/h2/a', '//*[@id="tag"]/div[2]/div/div/div[1]/div[1]/div/div[2]/h3/a', '//*[@id="latest"]/div[2]/div/div/div/div[1]/div/div[2]/h3/a']),callback='parse_item', follow=True),
+        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="homepage"]/div/div/div/div/div/div/h3/a', '//*[@id="homepage"]/div/div/div/div/div/h3/a', '//*[@id="homepage"]/div/div/div/div/h2/a', '//*[@id="tag"]/div/div/div/div/div/div/div[2]/h3/a', '//*[@id="latest"]/div/div/div/div/div/div/div[2]/h3/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):

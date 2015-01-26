@@ -12,7 +12,7 @@ class WeeklyStandard(CrawlSpider):
     start_urls = ["http://www.weeklystandard.com/", "http://www.weeklystandard.com/politics-and-government", "http://www.weeklystandard.com/foreign-policy-and-national-security", "http://www.weeklystandard.com/books-arts-and-society", "http://www.weeklystandard.com/issue/current"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="featured-teasers"]/div/div/h2/a','//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div[2]/h2/a', '//*[@id="center"]/div/div[1]/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a']),callback='parse_item', follow=True),
+        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="featured-teasers"]/div/div/h2/a','//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):
