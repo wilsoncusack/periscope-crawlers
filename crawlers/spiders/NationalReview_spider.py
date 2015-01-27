@@ -28,7 +28,7 @@ class NationalReview(CrawlSpider):
             # //*[@id="article_text"]/div/div/div/div/p[1]/span[1]/text()
             # sel.xpath('//*[@id="article_text"]/div/div/div/div/p/text()')
             content = sel.xpath('//*[@id="article_text"]/div/div/div/div/p/text()')
-            link = sel.xpath('/html/head/link[1]/@href')
+            link = sel.xpath('/html/head/link[2]/@href')
 
 
             item = newsItem()

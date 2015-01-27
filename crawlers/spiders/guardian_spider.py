@@ -6,38 +6,38 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from crawlers.items import newsItem
 import unicodedata
 
-class WeeklyStandard(CrawlSpider):
-    name = "weeklyStandard"
-    allowed_domains = ["weeklystandard.com"]
-    start_urls = ["http://www.weeklystandard.com/", "http://www.weeklystandard.com/politics-and-government", "http://www.weeklystandard.com/foreign-policy-and-national-security", "http://www.weeklystandard.com/books-arts-and-society", "http://www.weeklystandard.com/issue/current"]
+class Guardian(CrawlSpider):
+    name = "Guardian"
+    allowed_domains = ["theguardian.com"]
+    start_urls = ["http://www.theguardian.com/", "http://www.theguardian.com/us-news", "http://www.theguardian.com/world", "http://www.theguardian.com/us/business"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="featured-teasers"]/div/div/h2/a','//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a']),callback='parse_item', follow=True),
+        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="us-news"]/div/div/div/ul/li/div/div/a', '//*[@id="us-news"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="us-politics"]/div/div/div/ul/li/div/div/a', '//*[@id="us-politics"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="opinion-&-analysis"]/div/div/div/ul/li/div/div/a', '//*[@id="opinion-&-analysis"]/div/div/div/ul/li[3]/ul/li/div/div/a', '//*[@id="world-news"]/div/div/div/ul/li/div/div/a', '//*[@id="world-news"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="world-networks"]/div/div/div/ul/li/div/div/a[2]', '//*[@id="world-networks"]/div/div/div/ul/li/ul/li/div/div/a[2]', '//*[@id="around-the-world"]/div/div/div/ul/li/div/div/a[2]', '//*[@id="around-the-world"]/div/div/div/ul/li[3]/ul/li/div/div/a[2]', '//*[@id="in-case-you-missed"]/div/div/div/ul/li/div/div/a', '//*[@id="business"]/div/div/div/ul/li/div/div/a', '//*[@id="business"]/div/div/div/ul/li[3]/ul/li/div/div/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):
         try:
             sel = Selector(response)
             #print response
-            title = sel.xpath('//*[@id="center"]/div[2]/h1/text()')
+            title = sel.xpath('//*[@id="article"]/header/div[1]/div/div/h1//text()')
             #print '           '
             #print unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
             #print '           '
             #try:
-            author = sel.xpath('//*[@id="center"]/div[2]/div[1]/span/a/text()')
+            author = sel.xpath('//*[@id="article"]/div/div/div[1]/div[2]/p[1]/span/a/text()')
             #    item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
             #except:
             #    item['author'] = ''
                 
             #content = sel.xpath('//*[@id="story"]/p[1]/text()') #List
-            content = sel.xpath('//*[@id="center"]/div[6]/div[1]/p/text()')
-            link = sel.xpath('/html/head/meta[4]/@content')
+            content = sel.xpath('//*[@id="article"]/div/div/div[1]/div[3]/p/text()')
+            link = sel.xpath('//*[@id="js-context"]/head/link[15]/@href')
 
 
             item = newsItem()
 
             try:
-                date = sel.xpath('//*[@id="center"]/div[2]/div[1]/span/span/text()')
+                date = sel.xpath('//*[@id="article"]/div/div/div[1]/div[2]/p[2]/time/text()')
                 item['date'] = unicodedata.normalize('NFKD', date[0].extract()).encode('ascii', 'ignore')
             except:
                 item['date'] = -1
@@ -46,7 +46,7 @@ class WeeklyStandard(CrawlSpider):
             item['title'] = unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
             item['link'] = unicodedata.normalize('NFKD', link[0].extract()).encode('ascii', 'ignore')
             item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
-            item['publication'] = 'The Weekly Standard'
+            item['publication'] = 'The Guardian'
             item['politicalScore'] = 0
             item['posNegScore'] = 0
             
