@@ -9,11 +9,17 @@ import unicodedata
 class nyt(CrawlSpider):
     name = "nyt"
     allowed_domains = ["nytimes.com"]
-    start_urls = ["http://www.nytimes.com/", "http://www.nytimes.com/pages/world/", "http://www.nytimes.com/pages/national/",  "http://www.nytimes.com/pages/nyregion/",  "http://www.nytimes.com/pages/business/",  "http://www.nytimes.com/pages/science/",  "http://www.nytimes.com/pages/fashion/"]
+    start_urls = ["http://www.nytimes.com/", 
+    "http://topics.nytimes.com/top/opinion/editorialsandoped/oped/columnists/index.html",
+    "http://opinionator.blogs.nytimes.com/",
+    "http://topics.nytimes.com/top/opinion/editorialsandoped/editorials/index.html", 
+    "http://topics.nytimes.com/top/opinion/editorialsandoped/oped/contributors/index.html", 
+    "http://www.nytimes.com/pages/opinion/", "http://www.nytimes.com/pages/world/", 
+    "http://www.nytimes.com/pages/national/",  "http://www.nytimes.com/pages/nyregion/",  "http://www.nytimes.com/pages/business/",  "http://www.nytimes.com/pages/science/",  "http://www.nytimes.com/pages/fashion/"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//div[@class="story"]/h3/a','//div[@class="story"]/h4/a','//div[@class="story"]/h5/a']),callback='parse_item', follow=True),
-        ) 
+        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@class="post"]/header/h3/a','//*[@id="searchList"]/div/h4/a', '//*[@id="spanABTopRegion"]/div[1]/div/div/div/div/h3/a', '//*[@id="feedContent"]/div/h3/a', '//*[@id="main"]/div/div/div[1]/div[1]/div[1]/div/h3/a', '//*[@id="spanABCRegion"]/div[1]/div[2]/div/div[1]/h3/a', '//div[@class="story"]/h3/a','//div[@class="story"]/h4/a','//div[@class="story"]/h5/a']),callback='parse_item', follow=True),
+        )
 
     def parse_item(self, response):
         try:
