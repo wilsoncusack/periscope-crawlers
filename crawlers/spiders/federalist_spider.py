@@ -5,51 +5,49 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
+import datetime
 
-class NPR(CrawlSpider):
-    name = "NPR"
-    allowed_domains = ["npr.org"]
-    start_urls = ["http://www.npr.org/sections/news/", "http://www.npr.org/sections/us/", "http://www.npr.org/sections/world/", "http://www.npr.org/sections/politics/", "http://www.npr.org/sections/business/", "http://www.npr.org/sections/technology/", "http://www.npr.org/sections/science/", "http://www.npr.org/sections/health/"]
+class nyt(CrawlSpider):
+    now = datetime.datetime.now()
+    name = "federalist"
+    allowed_domains = ["thefederalist.com"]
+    start_urls = [
+    "http://thefederalist.com/blog/",
+    ]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="featured"]/div/article/div[2]/h1/a', '//*[@id="overflow"]/article/div[2]/h1/a']),callback='parse_item', follow=True),
+        Rule(SgmlLinkExtractor(restrict_xpaths=['//article/div/header/h2/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):
         try:
             sel = Selector(response)
             #print response
-            title = sel.xpath('//*[@id="sectionWrap"]/section/article/div[1]/h1/text()')
+            title = sel.xpath('//article/div[1]/div[4]/header/h2/a/text()')
             #print '           '
             #print unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
             #print '           '
-            #try:
-            author = sel.xpath('//*[@id="storybyline"]/div/div/div/div/a/div/div/text()')
-            #    item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
-            #except:
-            #    item['author'] = ''
-                
+            author = sel.xpath('//article/div[1]/div[4]/div[4]/a/text()')
             #content = sel.xpath('//*[@id="story"]/p[1]/text()') #List
-            content = sel.xpath('//*[@id="storytext"]/p/text()')
-            link = sel.xpath('/html/head/link[1]/@href')
+            content = sel.xpath('//div/p/text()')
+            link = sel.xpath('//article/div[1]/div[4]/header/h2/a/@href')
 
 
             item = newsItem()
 
             try:
-                date = sel.xpath('//*[@id="story-meta"]/div[1]/time/span[1]/text()')
+                date = sel.xpath('//article/div[1]/div[4]/div[4]/text()')
+                print "---------" + date + "---------\n\n\n" 
                 item['date'] = unicodedata.normalize('NFKD', date[0].extract()).encode('ascii', 'ignore')
             except:
                 item['date'] = -1
 
-
             item['title'] = unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
             item['link'] = unicodedata.normalize('NFKD', link[0].extract()).encode('ascii', 'ignore')
             item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
-            item['publication'] = 'NPR'
-            item['politicalScore'] = -2
+            item['publication'] = 'The Federalist'
+            item['politicalScore'] = 200
             item['posNegScore'] = 0
-            
             wholeBody = ''
             for part in content:
                 wholeBody += unicodedata.normalize('NFKD', part.extract()).encode('ascii', 'ignore')
@@ -59,4 +57,5 @@ class NPR(CrawlSpider):
 
             return [item]
         except:
+            print("res" + str(response))
             return []

@@ -31,7 +31,6 @@ class CrawlersPipeline(object):
 	def process_item(self, item, spider):
 		# conn = psycopg2.connect("postgres://dildnnrtxzwbhd:0_PSHQh5konS1dKcY8CIyCplBK@ec2-54-235-80-55.compute-1.amazonaws.com:5432/d6h2dosmoqipg1")
 		# cursor = conn.cursor()
-
 		self.cursor.execute("SELECT COUNT(*) FROM articles WHERE title = %s AND author = %s AND publication = %s", 
 			(item['title'], item['author'], item['publication'],))
 		# grab the first thing from the SQL query
