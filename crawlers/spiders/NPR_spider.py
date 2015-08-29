@@ -1,7 +1,6 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
@@ -12,7 +11,7 @@ class NPR(CrawlSpider):
     start_urls = ["http://www.npr.org/sections/news/", "http://www.npr.org/sections/us/", "http://www.npr.org/sections/world/", "http://www.npr.org/sections/politics/", "http://www.npr.org/sections/business/", "http://www.npr.org/sections/technology/", "http://www.npr.org/sections/science/", "http://www.npr.org/sections/health/"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="featured"]/div/article/div[2]/h1/a', '//*[@id="overflow"]/article/div[2]/h1/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="featured"]/div/article/div[2]/h1/a', '//*[@id="overflow"]/article/div[2]/h1/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):

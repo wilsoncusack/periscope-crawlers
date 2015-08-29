@@ -1,7 +1,7 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
+
 
 from crawlers.items import newsItem
 import unicodedata
@@ -16,7 +16,7 @@ class nyt(CrawlSpider):
     ]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="content-col"]/section[2]/article/header/h2/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="content-col"]/section[2]/article/header/h2/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):
@@ -46,7 +46,7 @@ class nyt(CrawlSpider):
             item['link'] = unicodedata.normalize('NFKD', link[0].extract()).encode('ascii', 'ignore')
             item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
             item['publication'] = 'Reason'
-            item['politicalScore'] = 175
+            item['politicalScore'] = 100
             item['posNegScore'] = 0
             wholeBody = ''
             for part in content:

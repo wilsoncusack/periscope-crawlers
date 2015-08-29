@@ -1,7 +1,6 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
@@ -25,7 +24,7 @@ class nyt(CrawlSpider):
     #     )
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="spanABTopRegion"]/div/div/div/div/h2/a','//*[@id="spanABTopRegion"]/div[3]/div/div[2]/div/div/h3/a', '//*[@id="searchList"]/div/h4/a', '//*[@class="post"]/header/h3/a', '//*[@id="spanABCRegion"]/div[1]/div[2]/div/div/h3/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="spanABTopRegion"]/div/div/div/div/h2/a','//*[@id="spanABTopRegion"]/div[3]/div/div[2]/div/div/h3/a', '//*[@id="searchList"]/div/h4/a', '//*[@class="post"]/header/h3/a', '//*[@id="spanABCRegion"]/div[1]/div[2]/div/div/h3/a']),callback='parse_item', follow=True),
         )
 
 

@@ -39,9 +39,9 @@ class CrawlersPipeline(object):
 			raise DropItem("Dropping article, already in database")
 		else:
 			#note, dateadded will default to current date, datewritten need to be configured with item['date']
-			SQL = "INSERT INTO articles (title, link, author, body, publication, political_score, pos_neg_score) VALUES (%s, %s, %s, %s, %s, %s, %s)" 
+			SQL = "INSERT INTO articles (title, link, author, body, publication, political_score, pos_neg_score, publication_description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)" 
 			data = (item['title'], item['link'], item['author'], item['body'], 
-				item['publication'], item['politicalScore'], item['posNegScore'],)
+				item['publication'], item['politicalScore'], item['posNegScore'], item['description'],)
 			self.cursor.execute(SQL, data)
 	    	return item
 

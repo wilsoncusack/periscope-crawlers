@@ -5,34 +5,31 @@ from scrapy.linkextractors import LinkExtractor
 from crawlers.items import newsItem
 import unicodedata
 
-class economist(CrawlSpider):
-    name = "economist"
-    allowed_domains = ["economist.com"]
-    start_urls = ["https://www.economist.com/", "https://www.economist.com/news/world-week/21600185-politics-week", "https://www.economist.com/business-finance", "https://www.economist.com/economics", "https://www.economist.com/science-technology", "https://www.economist.com/culture"]
+class nyt(CrawlSpider):
+    name = "democracy"
+    allowed_domains = ["democracyjournal.org"]
+    start_urls = [
+    "https://www.democracyjournal.org/",
+    ]
 
     rules = (
-        Rule(LinkExtractor(restrict_xpaths=['//*[@id="hero"]/li/div/a', '//*[@id="homepage-center-inner"]/section/article/a', '//*[@id="homepage-highlight-1"]/article/a', '']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="content_left"]/h1/a']),callback='parse_item', follow=True),
         )
-    # 
 
     def parse_item(self, response):
         try:
             sel = Selector(response)
-            #print response
-            title = sel.xpath('/html/head/title/text()')
-            #print '           '
-            #print unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
-            #print '           '
-            author = sel.xpath('//*[@id="story-header"]/div/div/p/span/a/span/text()')
+            title = sel.xpath('//*[@id="content_article"]/h1/text()')
+            author = sel.xpath('//*[@id="content_article"]/div[2]/text()')
             #content = sel.xpath('//*[@id="story"]/p[1]/text()') #List
-            content = sel.xpath('//*[@class="story-body-text story-content"]/text()')
-            link = sel.xpath('/html/head/link[2]/@href')
-
+            content = sel.xpath('//*[@id="content_article"]/p/text()')
+            link = sel.xpath('/html/head/meta[5]/@content')
+            description = sel.xpath('//*[@id="content_article"]/h2/text()')
 
             item = newsItem()
 
             try:
-                date = sel.xpath('//*[@id="story-header"]/div/div/p/time/text()')
+                date = sel.xpath('//*[@id="content_article"]/div[1]/text()').split(",")[1]
                 item['date'] = unicodedata.normalize('NFKD', date[0].extract()).encode('ascii', 'ignore')
             except:
                 item['date'] = -1
@@ -40,17 +37,17 @@ class economist(CrawlSpider):
             item['title'] = unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
             item['link'] = unicodedata.normalize('NFKD', link[0].extract()).encode('ascii', 'ignore')
             item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
-            item['publication'] = 'Economist'
-            item['politicalScore'] = 0
+            item['description'] = unicodedata.normalize('NFKD', description[0].extract()).encode('ascii', 'ignore')
+            item['publication'] = 'Democracy Journal'
+            item['politicalScore'] = -150
             item['posNegScore'] = 0
-
             wholeBody = ''
             for part in content:
                 wholeBody += unicodedata.normalize('NFKD', part.extract()).encode('ascii', 'ignore')
             item['body'] = unicodedata.normalize('NFKD', content[0].extract()).encode('ascii', 'ignore')
             item['body'] = wholeBody
-            #print(link)
 
             return [item]
         except:
+            print("res" + str(response))
             return []

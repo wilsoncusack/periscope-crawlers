@@ -1,18 +1,17 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
 
 class GuardianOpinion(CrawlSpider):
-    name = "GuardianOpinion"
+    name = "guardianOpinion"
     allowed_domains = ["theguardian.com"]
     start_urls = ["http://www.theguardian.com/us/commentisfree"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="opinion"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="talking-points"]/div/div/div/ul/li/div/div/a', '//*[@id="talking-points"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="in-case-you-missed"]/div/div/div/ul/li/div/div/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="opinion"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="talking-points"]/div/div/div/ul/li/div/div/a', '//*[@id="talking-points"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="in-case-you-missed"]/div/div/div/ul/li/div/div/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):

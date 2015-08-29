@@ -1,7 +1,6 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
@@ -12,29 +11,39 @@ class NationalReview(CrawlSpider):
     start_urls = ["http://www.nationalreview.com", "http://www.nationalreview.com/corner"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="scroll600_otd_show_hide"]/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['/html/body/div[4]/div[1]/div[1]/div/div/div/header/h1/a','/html/body/div[3]/div/div[1]/div/div/div/ul/li[1]/div/div[1]/div[2]/div[2]/div/div/a','/html/body/div[3]/div/div[1]/div/div/div/ul/li[1]/div/div[1]/div[2]/div[1]/div/div/a', '/html/body/div[3]/div/div[1]/div/div/div/ul/li[1]/div/div[1]/div/div/div/a']),callback='parse_item', follow=True),
         )
+    # /html/body/div[3]/div/div[1]/div/div/div/ul/li[1]/div/div[1]/div[2]/div[1]/div[1]/div/a
+    # /html/body/div[3]/div/div[1]/div/div/div/ul/li[1]/div/div[1]/div[2]/div[1]/div[2]/div/a
+    # /html/body/div[3]/div/div[1]/div/div/div/ul/li[1]/div/div[1]/div[3]/div[4]/div/a
+    # /html/body/div[3]/div/div[1]/div/div/div/ul/li[1]/div/div[1]/div[4]/div[1]/div/a
+
 
     def parse_item(self, response):
         try:
             sel = Selector(response)
             #print response
-            title = sel.xpath('//*[@id="font-size26"]/text()')
+            try:
+                title = sel.xpath('/html/body/div[5]/div[1]/div[1]/div/div[1]/div/header/h1/a/text()')
+            except:
+                # for the corner, not working
+                title = sel.xpath('/html/body/div[4]/div[1]/div[1]/div/div[2]/div/header/h1/a/text()')
+            
             #print '           '
             #print unicodedata.normalize('NFKD', title[0].extract()).encode('ascii', 'ignore')
             #print '           '
-            author = sel.xpath('//*[@id="author-wrapper"]/div/a/span/text()')
+            author = sel.xpath('/html/body/div[5]/div[1]/div[1]/div/div[1]/div/div[4]/div[1]/div/div[2]/span/a/text()')
             #content = sel.xpath('//*[@id="story"]/p[1]/text()') #List
             # //*[@id="article_text"]/div/div/div/div/p[1]/span[1]/text()
             # sel.xpath('//*[@id="article_text"]/div/div/div/div/p/text()')
-            content = sel.xpath('//*[@id="article_text"]/div/div/div/div/p/text()')
-            link = sel.xpath('/html/head/link[2]/@href')
+            content = sel.xpath('/html/body/div[5]/div[1]/div[1]/div/div[1]/div/div[4]/div[1]/div/p/text()')
+            link = sel.xpath('/html/body/div[5]/div[1]/div[1]/div/div[1]/div/header/h1/a/@href')
 
 
             item = newsItem()
 
             try:
-                date = sel.xpath('//*[@id="node-375166"]/div[1]/span/text()')
+                date = sel.xpath('/html/body/div[5]/div[1]/div[1]/div/div[1]/div/div[4]/div[1]/div/div[2]/time/text()')
                 item['date'] = unicodedata.normalize('NFKD', date[0].extract()).encode('ascii', 'ignore')
             except:
                 item['date'] = -1
@@ -43,7 +52,7 @@ class NationalReview(CrawlSpider):
             item['link'] = unicodedata.normalize('NFKD', link[0].extract()).encode('ascii', 'ignore')
             item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
             item['publication'] = 'National Review'
-            item['politicalScore'] = 0
+            item['politicalScore'] = 150
             item['posNegScore'] = 0
             wholeBody = ''
             for part in content:

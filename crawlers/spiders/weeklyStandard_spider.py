@@ -1,7 +1,6 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
@@ -12,7 +11,7 @@ class WeeklyStandard(CrawlSpider):
     start_urls = ["http://www.weeklystandard.com/", "http://www.weeklystandard.com/politics-and-government", "http://www.weeklystandard.com/foreign-policy-and-national-security", "http://www.weeklystandard.com/books-arts-and-society", "http://www.weeklystandard.com/issue/current"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="featured-teasers"]/div/div/h2/a','//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="featured-teasers"]/div/div/h2/a','//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/h2/a', '//*[@id="center"]/div/div/div/h2/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):
@@ -47,7 +46,7 @@ class WeeklyStandard(CrawlSpider):
             item['link'] = unicodedata.normalize('NFKD', link[0].extract()).encode('ascii', 'ignore')
             item['author'] = unicodedata.normalize('NFKD', author[0].extract()).encode('ascii', 'ignore')
             item['publication'] = 'The Weekly Standard'
-            item['politicalScore'] = 0
+            item['politicalScore'] = 150
             item['posNegScore'] = 0
             
             wholeBody = ''

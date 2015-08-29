@@ -1,7 +1,6 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
@@ -12,7 +11,7 @@ class bbc(CrawlSpider):
     start_urls = ["https://www.bbc.co.uk/", "https://www.bbc.com/news/", "https://www.bbc.com/news/world/us_and_canada/", "https://www.bbc.com/news/world/latin_america/", "https://www.bbc.com/news/uk/", "https://www.bbc.com/news/world/africa/", "https://www.bbc.com/news/world/asia/", "https://www.bbc.com/news/world/europe/", "https://www.bbc.com/news/world/middle_east/", "https://www.bbc.com/news/business/", "https://www.bbc.com/news/health/", "https://www.bbc.com/news/science_and_environment/", "https://www.bbc.com/news/technology/", "https://www.bbc.com/news/entertainment_and_arts/"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="news_hero"]/div/a','//*[@id="news_hero_mini"]/div/a', '//*[@id="news_moreTopStories"]/ul/li/a', '//*[@id="promo2_carousel_items"]/dl/dt/a', '//*[@id="business_hero_mini"]/div/a', '//*[@id="business_moreTopStories"]/ul/li/a', '//*[@id="sport_hero_mini"]/div/a', '//*[@id="sport_moreTopStories"]/ul/li/a', '//*[@id="more_entertainment_hero"]/div/a', '//*[@id="more_health_hero"]/div/a', '//*[@id="more_technology_hero"]/div/a', '//*[@id="more_science_hero"]/div/a', '//*[@id="capital_hero"]/div/a', '//*[@id="capital_list"]/ul/li/a', '//*[@id="autos_hero"]/div/a', '//*[@id="autos_list"]/ul/li/a', '//*[@id="culture_hero"]/div/a', '//*[@id="future_hero"]/div/a', '//*[@id="future_list"]/ul/li/a', '//*[@id="travel_hero"]/div/a', '//*[@id="travel_list"]/ul/li/a', '//*[@id="top-story"]/h2/a', '//*[@id="second-story"]/div/h2/a', '//*[@id="third-story"]/div/h2/a','//*[@id="other-top-stories"]/ul/li/h3/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="news_hero"]/div/a','//*[@id="news_hero_mini"]/div/a', '//*[@id="news_moreTopStories"]/ul/li/a', '//*[@id="promo2_carousel_items"]/dl/dt/a', '//*[@id="business_hero_mini"]/div/a', '//*[@id="business_moreTopStories"]/ul/li/a', '//*[@id="sport_hero_mini"]/div/a', '//*[@id="sport_moreTopStories"]/ul/li/a', '//*[@id="more_entertainment_hero"]/div/a', '//*[@id="more_health_hero"]/div/a', '//*[@id="more_technology_hero"]/div/a', '//*[@id="more_science_hero"]/div/a', '//*[@id="capital_hero"]/div/a', '//*[@id="capital_list"]/ul/li/a', '//*[@id="autos_hero"]/div/a', '//*[@id="autos_list"]/ul/li/a', '//*[@id="culture_hero"]/div/a', '//*[@id="future_hero"]/div/a', '//*[@id="future_list"]/ul/li/a', '//*[@id="travel_hero"]/div/a', '//*[@id="travel_list"]/ul/li/a', '//*[@id="top-story"]/h2/a', '//*[@id="second-story"]/div/h2/a', '//*[@id="third-story"]/div/h2/a','//*[@id="other-top-stories"]/ul/li/h3/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):

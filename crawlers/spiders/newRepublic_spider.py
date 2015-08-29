@@ -1,7 +1,6 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
@@ -12,7 +11,7 @@ class NewRepublic(CrawlSpider):
     start_urls = ["https://www.newrepublic.com/", "https://www.newrepublic.com/tags/politics", "https://www.newrepublic.com/tags/politics?page=1", "https://www.newrepublic.com/tags/culture", "https://www.newrepublic.com/tags/culture?page=1", "https://www.newrepublic.com/latest"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="homepage"]/div[2]/div[1]/div[3]/div/div[1]/h3/a', '//*[@id="tag"]/div[2]/div/div/div[1]/div[1]/div[1]/div[2]/h3/a', '//*[@id="homepage"]/div/div/div/div/div/h3/a', '//*[@id="homepage"]/div[2]/div/div/div/div/div/h3/a', '//*[@id="tag"]/div[2]/div/div/div/div/div/div/h3/a', '//*[@id="tag"]/div/div/div/div/div/div/div/h3/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="homepage"]/div[2]/div[1]/div[3]/div/div[1]/h3/a', '//*[@id="tag"]/div[2]/div/div/div[1]/div[1]/div[1]/div[2]/h3/a', '//*[@id="homepage"]/div/div/div/div/div/h3/a', '//*[@id="homepage"]/div[2]/div/div/div/div/div/h3/a', '//*[@id="tag"]/div[2]/div/div/div/div/div/div/h3/a', '//*[@id="tag"]/div/div/div/div/div/div/div/h3/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):

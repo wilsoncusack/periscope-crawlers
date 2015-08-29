@@ -1,7 +1,6 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
@@ -12,7 +11,7 @@ class Guardian(CrawlSpider):
     start_urls = ["http://www.theguardian.com/", "http://www.theguardian.com/us-news", "http://www.theguardian.com/world", "http://www.theguardian.com/us/business"]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=['//*[@id="us-news"]/div/div/div/ul/li/div/div/a', '//*[@id="us-news"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="us-politics"]/div/div/div/ul/li/div/div/a', '//*[@id="us-politics"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="opinion-&-analysis"]/div/div/div/ul/li/div/div/a', '//*[@id="opinion-&-analysis"]/div/div/div/ul/li[3]/ul/li/div/div/a', '//*[@id="world-news"]/div/div/div/ul/li/div/div/a', '//*[@id="world-news"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="world-networks"]/div/div/div/ul/li/div/div/a[2]', '//*[@id="world-networks"]/div/div/div/ul/li/ul/li/div/div/a[2]', '//*[@id="around-the-world"]/div/div/div/ul/li/div/div/a[2]', '//*[@id="around-the-world"]/div/div/div/ul/li[3]/ul/li/div/div/a[2]', '//*[@id="in-case-you-missed"]/div/div/div/ul/li/div/div/a', '//*[@id="business"]/div/div/div/ul/li/div/div/a', '//*[@id="business"]/div/div/div/ul/li[3]/ul/li/div/div/a']),callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths=['//*[@id="us-news"]/div/div/div/ul/li/div/div/a', '//*[@id="us-news"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="us-politics"]/div/div/div/ul/li/div/div/a', '//*[@id="us-politics"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="opinion-&-analysis"]/div/div/div/ul/li/div/div/a', '//*[@id="opinion-&-analysis"]/div/div/div/ul/li[3]/ul/li/div/div/a', '//*[@id="world-news"]/div/div/div/ul/li/div/div/a', '//*[@id="world-news"]/div/div/div/ul/li/ul/li/div/div/a', '//*[@id="world-networks"]/div/div/div/ul/li/div/div/a[2]', '//*[@id="world-networks"]/div/div/div/ul/li/ul/li/div/div/a[2]', '//*[@id="around-the-world"]/div/div/div/ul/li/div/div/a[2]', '//*[@id="around-the-world"]/div/div/div/ul/li[3]/ul/li/div/div/a[2]', '//*[@id="in-case-you-missed"]/div/div/div/ul/li/div/div/a', '//*[@id="business"]/div/div/div/ul/li/div/div/a', '//*[@id="business"]/div/div/div/ul/li[3]/ul/li/div/div/a']),callback='parse_item', follow=True),
         )
 
     def parse_item(self, response):

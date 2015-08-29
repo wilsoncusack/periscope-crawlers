@@ -1,7 +1,6 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider, CrawlSpider, Rule
 from scrapy.selector import Selector
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 from crawlers.items import newsItem
 import unicodedata
@@ -23,7 +22,7 @@ class Aljazeera(CrawlSpider):
     ]
 
     rules = (
-        Rule(SgmlLinkExtractor(restrict_xpaths=[
+        Rule(LinkExtractor(restrict_xpaths=[
             '/html/body/div[2]/div/div/div[1]/div/div/div/div/div[2]/div[2]/h3/a', '//*[@id="articleHighlightList-0"]/div/div/div[2]/article/div[2]/h3/a']),callback='parse_item', follow=True),
         )
 # /html/body/div[2]/div/div/div[1]/div/div[3]/div/div/div[2]/div[2]/h3/a

@@ -12,6 +12,7 @@ class newsItem(Item):
     link = Field()
     body = Field()
     author = Field()
+    description = Field()
     date = Field()
     publication = Field()
     politicalScore = Field()
