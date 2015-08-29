@@ -29,8 +29,14 @@ class nyt(CrawlSpider):
             content = sel.xpath('//div/p/text()')
             link = sel.xpath('//header/h2/a/@href')
 
-
             item = newsItem()
+
+            try:
+                # Not sure why this isn't working
+                description = sel.xpath('//*[@class="entry-dek"]/p/text()')
+                item['description'] = unicodedata.normalize('NFKD', description[0].extract()).encode('ascii', 'ignore')
+            except: 
+                item['description'] = ''
 
             try:
                 date = sel.xpath('//*[@id="top-side"]/div[1]/div[2]/text()')
@@ -49,7 +55,6 @@ class nyt(CrawlSpider):
                 wholeBody += unicodedata.normalize('NFKD', part.extract()).encode('ascii', 'ignore')
             item['body'] = unicodedata.normalize('NFKD', content[0].extract()).encode('ascii', 'ignore')
             item['body'] = wholeBody
-            item['description'] = ''
             #print(link)
 
             return [item]
