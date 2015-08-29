@@ -17,7 +17,6 @@ class nyt(CrawlSpider):
         )
 
     def parse_item(self, response):
-        print 'here\n\n'
         try:
             sel = Selector(response)
             #print response
@@ -50,6 +49,7 @@ class nyt(CrawlSpider):
                 wholeBody += unicodedata.normalize('NFKD', part.extract()).encode('ascii', 'ignore')
             item['body'] = unicodedata.normalize('NFKD', content[0].extract()).encode('ascii', 'ignore')
             item['body'] = wholeBody
+            item['description'] = ''
             #print(link)
 
             return [item]
