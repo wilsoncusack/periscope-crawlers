@@ -1,4 +1,4 @@
 Scrapy==1.0.3
 zope.interface==3.6.0 
 psycopg2==2.5.4
-pyopenssl==0.15.1
+pyopenssl==0.13
